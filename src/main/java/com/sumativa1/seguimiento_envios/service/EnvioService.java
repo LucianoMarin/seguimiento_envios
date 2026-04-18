@@ -24,7 +24,6 @@ public interface EnvioService {
 
     String modificarEstados();
 
-    
-    //Envio obtenerPorCodigoSeguimiento(String codigo);
+
 
 }
