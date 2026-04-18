@@ -44,6 +44,29 @@ public class ControllerEnvio {
         return envioService.mostrarEnvios();
     }
 
+
+  @GetMapping("/ubicacion")
+    public List<String> mostrarUbicacion() {
+        /* log de endpoint mostrar todas las ubicaciones Actuales */
+        log.info("GET /ubicacion");
+        log.info("Retorna las ubicaciones");
+
+        return envioService.mostrarUbicaciones();
+    }
+
+
+
+    @GetMapping("/ubicacion/{id}")
+    public String mostrarUbicacion(@PathVariable Long id) {
+        /* log de endpoint mostrar una ubicacion actual por id */
+        log.info("GET /ubicacion/id");
+        log.info("Retora una ubicacion");
+
+        return envioService.obtenerUbicacion(id);
+    }
+
+
+
     /* endpoint GET obtener un envio */
     @GetMapping("/{id}")
     public Envio mostrarEnvioPorId(@PathVariable Long id) {
@@ -111,5 +134,10 @@ public class ControllerEnvio {
 
         return ResponseEntity.ok("Estados actualizados");
     }
+
+
+
+
+
 
 }

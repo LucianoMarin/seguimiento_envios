@@ -10,6 +10,12 @@ public interface EnvioService {
 
     Envio obtenerEnvioPorId(Long id);
 
+
+    List <String> mostrarUbicaciones();
+
+    String obtenerUbicacion(Long id);
+
+
     Envio crearEnvio(Envio envio);
 
     Envio actualizarEnvio(Long id, Envio envio);

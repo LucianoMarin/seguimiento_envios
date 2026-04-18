@@ -1,5 +1,6 @@
 package com.sumativa1.seguimiento_envios.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,4 +192,49 @@ public class EnvioServiceImp implements EnvioService {
 
     }
 
+
+
+       @Override
+
+
+       public List <String> mostrarUbicaciones(){
+        List <String> ubicaciones=new ArrayList<>();
+        List <Envio> envios=envioRepository.findAll();
+
+
+        for(Envio v: envios){
+
+            if(v.getId()!=null){
+
+                ubicaciones.add(v.getUbicacionActual());
+
+            }
+
+        }
+
+        return ubicaciones;
+
+       }
+
+       @Override
+
+
+       public String obtenerUbicacion(Long id){
+        String ubicacion="";
+        
+        List <Envio> envios=envioRepository.findAll();
+
+        for(Envio m: envios){
+
+            if(id==m.getId()){
+
+                ubicacion=m.getUbicacionActual();
+
+            }
+
+        }
+
+        return ubicacion;
+
+       }
 }
