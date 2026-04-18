@@ -3,12 +3,13 @@ package com.sumativa1.seguimiento_envios.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.sumativa1.seguimiento_envios.controller.EnvioDuplicateResourceException;
 import com.sumativa1.seguimiento_envios.controller.EnvioNotFoundException;
+import com.sumativa1.seguimiento_envios.model.Cliente;
 import com.sumativa1.seguimiento_envios.model.Envio;
+import com.sumativa1.seguimiento_envios.repository.ClienteRepository;
 import com.sumativa1.seguimiento_envios.repository.EnvioRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ public class EnvioServiceImp implements EnvioService {
 
     @Autowired
     private EnvioRepository envioRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     /*
      * FUNCION MOSTRAR ENVIO, VALIDA ANTES SI EN LA BD EXISTE ALGUN DATO, SI NO HAY
@@ -52,13 +56,11 @@ public class EnvioServiceImp implements EnvioService {
 
         log.info("SE EJECUTO SERVICEIMP CREAR ENVIO");
 
-        try {
-            return envioRepository.save(envio);
-
-        } catch (DataIntegrityViolationException e) {
-            /* VALIDAR QUE MI CODIGO DE SEGUIMIENTO NO SE DUPLIQUE */
-            throw new EnvioDuplicateResourceException("Error al crear envio, revise los campos");
+        if (envioRepository.existsByCodigoSeguimiento(envio.getCodigoSeguimiento())) {
+            throw new EnvioDuplicateResourceException("Código duplicado");
         }
+
+        return envioRepository.save(envio);
 
     }
 
@@ -72,7 +74,7 @@ public class EnvioServiceImp implements EnvioService {
         log.info("SE EJECUTO SERVICEIMP ELIMINAR ENVIO");
 
         if (!envioRepository.existsById(id)) {
-            throw new EnvioNotFoundException("El envio no existe");
+            throw new EnvioNotFoundException("el envio (id) que desea eliminar, no existe");
         }
 
         envioRepository.deleteById(id);
@@ -107,46 +109,50 @@ public class EnvioServiceImp implements EnvioService {
         Envio existente = envioRepository.findById(id)
                 .orElseThrow(() -> new EnvioNotFoundException("No existe el envio"));
 
-        try {
-
-            if (envio.getCodigoSeguimiento() != null) {
-                existente.setCodigoSeguimiento(envio.getCodigoSeguimiento());
-            }
-
-            if (envio.getEstado() != null) {
-                existente.setEstado(envio.getEstado());
-            }
-
-            if (envio.getUbicacionOrigen() != null) {
-                existente.setUbicacionOrigen(envio.getUbicacionOrigen());
-            }
-
-            if (envio.getUbicacionActual() != null) {
-                existente.setUbicacionActual(envio.getUbicacionActual());
-            }
-
-            if (envio.getUbicacionDestino() != null) {
-                existente.setUbicacionDestino(envio.getUbicacionDestino());
-            }
-
-            if (envio.getCliente() != null) {
-                existente.setCliente(envio.getCliente());
-            }
-            if (envio.getFechaEntrega() != null) {
-                existente.setFechaEntrega(envio.getFechaEntrega());
-
-            }
-            if (envio.getFechaEnvio() != null) {
-                existente.setFechaEnvio(envio.getFechaEnvio());
-
-            }
-
-            return envioRepository.save(existente);
-
-        } catch (DataIntegrityViolationException e) {
-            /* VALIDAR QUE MI CODIGO DE SEGUIMIENTO NO SE DUPLIQUE */
-            throw new EnvioDuplicateResourceException("Código de seguimiento ya registrado");
+        if (envioRepository.existsByCodigoSeguimiento(envio.getCodigoSeguimiento())) {
+            throw new EnvioDuplicateResourceException("Código de seguimiento ya en uso");
         }
+
+        if (envio.getCliente() != null && envio.getCliente().getId() != null) {
+
+            Cliente cliente = clienteRepository.findById(envio.getCliente().getId())
+                    .orElseThrow(() -> new EnvioNotFoundException("Cliente no existe, intente con otro id"));
+
+            existente.setCliente(cliente);
+        }
+
+
+        if (envio.getCodigoSeguimiento() != null) {
+            existente.setCodigoSeguimiento(envio.getCodigoSeguimiento());
+        }
+
+        if (envio.getEstado() != null) {
+            existente.setEstado(envio.getEstado());
+        }
+
+        if (envio.getUbicacionOrigen() != null) {
+            existente.setUbicacionOrigen(envio.getUbicacionOrigen());
+        }
+
+        if (envio.getUbicacionActual() != null) {
+            existente.setUbicacionActual(envio.getUbicacionActual());
+        }
+
+        if (envio.getUbicacionDestino() != null) {
+            existente.setUbicacionDestino(envio.getUbicacionDestino());
+        }
+
+
+        if (envio.getFechaEntrega() != null) {
+            existente.setFechaEntrega(envio.getFechaEntrega());
+
+        }
+        if (envio.getFechaEnvio() != null) {
+            existente.setFechaEnvio(envio.getFechaEnvio());
+
+        }
+
+        return envioRepository.save(existente);
 
     }
 

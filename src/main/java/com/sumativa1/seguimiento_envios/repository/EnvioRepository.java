@@ -7,4 +7,6 @@ import com.sumativa1.seguimiento_envios.model.Envio;
 
 /* INTERFACE QUE LLAMARA EL REPOSITORIO DE JPA */
 public interface EnvioRepository extends JpaRepository<Envio, Long> {
+
+        boolean existsByCodigoSeguimiento(String codigoSeguimiento);
 }

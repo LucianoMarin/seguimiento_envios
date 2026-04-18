@@ -44,7 +44,7 @@ public class Envio {
 
 
     /* SE CREA COLUMNA ESTADO, PERMITE SOLO INGRESAR 5 ESTADOS PREDEFINIDOS POR REGEXP, NO PUEDE SER UN CAMPO VACIO */
-    @Pattern(regexp = "^(?i)(pendiente|en camino|entregado|cancelado|error)$", message = "Estado no valido, recuerde que estan pre-establecidos")
+    @Pattern(regexp = "^(?i)(PENDIENTE|EN CAMINO|ENTREGADO|CANCELADO|ERROR)$", message = "Estado no valido, recuerde que estan pre-establecidos como PENDIENTE|EN CAMINO|ENTREGADO|CANCELADO|ERROR ")
     @Size(min = 1, max = 30, message = "Debe ingresar un valor para el estado")
     @NotBlank(message = "El estado del envio no puede estar vacio")
     @Column(name="estado")
@@ -149,7 +149,8 @@ public class Envio {
     }
 
     public void setEstado(String estado) {
-        this.estado = estado;
+
+        this.estado = (estado != null) ? estado.toUpperCase() : null;
     }
 
     public String getUbicacionOrigen() {

@@ -57,18 +57,18 @@ public class ControllerEnvio {
 
     /* endpoint POST crear un envio */
 
-/* AL MOMENTO DE EJECUTAR EL ENDPOINT, CONSIDERAR QUE SE DEBE ASOCIAR AL CLIENTE
-    POR LO CUAL ESTE MICROSERVICIO CUENTA CON 3 INSERCIONES EN LA TABLA CLIENTE
-    CON ID: 1-> LUCIANO ,2 -> LUJANA ,3 -> MARIO
-
-*/
+    /*
+     * AL MOMENTO DE EJECUTAR EL ENDPOINT, CONSIDERAR QUE SE DEBE ASOCIAR AL CLIENTE
+     * POR LO CUAL ESTE MICROSERVICIO CUENTA CON 3 INSERCIONES EN LA TABLA CLIENTE
+     * CON ID: 1-> LUCIANO ,2 -> LUJANA ,3 -> MARIO
+     * 
+     */
 
     @PostMapping
     public Envio crearEnvio(@RequestBody Envio envio) {
         /* log de endpoint crear envio */
         log.info("POST /envio");
         log.info("Guarda un envio en la BD");
-
 
         return envioService.crearEnvio(envio);
 
@@ -96,20 +96,20 @@ public class ControllerEnvio {
 
     }
 
-/* ENDPOINT LLAMA LA FUNCION EN SERVICE QUE ACTUALIZA LOS ESTADOS DE LOS ENVIOS.
-    PARA ELLO SE DEBE SOLO EJECUTAR COMO PUT EN POSTMAN LA URL /ACTUALIZAR-ESTADOS
-*/
+    /*
+     * ENDPOINT LLAMA LA FUNCION EN SERVICE QUE ACTUALIZA LOS ESTADOS DE LOS ENVIOS.
+     * PARA ELLO SE DEBE SOLO EJECUTAR COMO PUT EN POSTMAN LA URL
+     * /ACTUALIZAR-ESTADOS
+     */
 
-@PutMapping("/actualizar-estados")
-public ResponseEntity<String> actualizarEstados() {
+    @PutMapping("/actualizar-estados")
+    public ResponseEntity<String> actualizarEstados() {
         log.info("PUT /envio/actualizar-estados");
         log.info("actualiza los estados de envios en BD");
-    
+
         envioService.modificarEstados();
-    
-    return ResponseEntity.ok("Estados actualizados");
-}
 
-
+        return ResponseEntity.ok("Estados actualizados");
+    }
 
 }
