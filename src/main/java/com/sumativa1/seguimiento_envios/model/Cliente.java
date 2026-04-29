@@ -44,6 +44,15 @@ public class Cliente {
     
     public Cliente(){}
 
+    public Cliente(Long id,String rut,String nombre,String apellido){
+            this.id=id;
+            this.rut=rut;
+            this.nombre=nombre;
+            this.apellido=apellido;
+
+        }
+
+
     public Cliente(String rut,String nombre,String apellido){
 
             this.rut=rut;
