@@ -17,6 +17,7 @@ public class ClienteTest {
         assertEquals("18775116-0", cliente.getRut());
         assertEquals("Luciano", cliente.getNombre());
         assertEquals("Marin", cliente.getApellido());
+        assertEquals(cliente, cliente);
 
 
     }

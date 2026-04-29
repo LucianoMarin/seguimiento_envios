@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import com.sumativa1.seguimiento_envios.model.Cliente;
 import com.sumativa1.seguimiento_envios.repository.ClienteRepository;
@@ -23,6 +24,7 @@ public class SeguimientoEnviosApplication {
 		se valida que no se repita las filas por cada inicio con repo.count y en el modelo con Column unique
 	*/
 	@Bean
+	@Profile("dev")
 	CommandLineRunner initData(ClienteRepository repo) {
 		return args -> {
 			if (repo.count() == 0) {
